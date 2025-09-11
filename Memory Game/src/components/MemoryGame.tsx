@@ -2,6 +2,21 @@ import Card from "./Card";
 import ScoreBoard from "./ScoreBoard";
 
 export default function MemoryGame() {
+  
+  //-----------------------
+  // Get Images from Api
+  // Set the Images to A State 
+  // pass The State To Card Components
+  //--------------------------------------
+  // Create a State for ScoreBoard Logic
+  // Create a State for Card Logic
+  // Make Function Logic inside those Components that Make them Effect Each Other.
+  //-------------------------------------------------------------------------------
+  
+
+
+
+  // Two Main Element 
   return (
     <>
       <div className="h-full flex flex-col w-full items-center gap-2">
@@ -13,9 +28,9 @@ export default function MemoryGame() {
         </div>
         <div className="flex-row gap-4 w-3/5 justify-center flex">
         <button className="w-1/4 p-1 bg-gray-300 rounded hover:scale-102">New Game</button>
-        <button className="w-1/4 bg-gray-300 rounded hover:scale-102">Restart</button>
         </div>
       </div>
     </>
   );
 }
+
