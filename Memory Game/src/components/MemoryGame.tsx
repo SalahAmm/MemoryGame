@@ -1,36 +1,82 @@
 import Card from "./Card";
 import ScoreBoard from "./ScoreBoard";
+import { useEffect } from "react";
+import { useState } from "react";
+
+type cardImagesType = {
+  name: string;
+  url: string;
+  id: number;
+};
 
 export default function MemoryGame() {
-  
   //-----------------------
-  // Get Images from Api
-  // Set the Images to A State 
-  // pass The State To Card Components
-  //--------------------------------------
   // Create a State for ScoreBoard Logic
   // Create a State for Card Logic
   // Make Function Logic inside those Components that Make them Effect Each Other.
   //-------------------------------------------------------------------------------
-  
 
 
+  const [cardImages, setCardImages] = useState<cardImagesType[]>([]);
 
-  // Two Main Element 
+  useEffect(() => {
+    const callImages = async () => {
+
+      try {
+        // Getting Pokemon Items 
+
+        const response = await fetch(`https://pokeapi.co/api/v2/pokemon/`);
+        const data = await response.json();
+        const result = await data.results.slice(0 , 8);
+
+        // Getting Only 8 of Them
+        
+        //Getting the images and passing and object of Data needed to the cardImage State Array
+       const images = await Promise.all (
+        result.map(async (item: {name : string , url : string}, index : number) => {
+          const name = item.name;
+          try {
+            const response = await fetch(item.url);
+            const data = await response.json();
+            const image = data.sprites.front_default;
+            
+            return  { name: name, url: image, id: index };
+          } catch (err) {
+            console.log(`ther Error is : `, err);
+          }
+        })
+       ) 
+       setCardImages(images);
+      } catch (err) {
+        console.log(`The Second Error is : `, err);
+      }
+    };
+    callImages();
+    console.log(cardImages);
+  }, []);
+
+  // Two Main Element
   return (
     <>
       <div className="h-full flex flex-col w-full items-center gap-2">
         <div className="h-2/10 border-3 w-full flex justify-center">
           <ScoreBoard />
         </div>
-        <div className="flex justify-center h-8/10 w-full border-3">
-          <Card />
+
+        {/* Cards */}
+        <div className="flex justify-center h-8/10 w-full border-3 ">
+          <div className="flex w-4/5 h-full p-4 flex-wrap gap-2 justify-center">
+            {cardImages.map((item) => {
+              return <Card key={item.id} name={item.name} image={item.url} />
+            })}
+          </div>
         </div>
         <div className="flex-row gap-4 w-3/5 justify-center flex">
-        <button className="w-1/4 p-1 bg-gray-300 rounded hover:scale-102">New Game</button>
+          <button className="w-1/4 p-1 bg-gray-300 rounded hover:scale-102">
+            New Game
+          </button>
         </div>
       </div>
     </>
   );
 }
-
