@@ -3,6 +3,7 @@ import ScoreBoard from "./ScoreBoard";
 import { useEffect } from "react";
 import { useState } from "react";
 
+
 type cardImagesType = {
   name: string;
   url: string;
@@ -15,7 +16,9 @@ export default function MemoryGame() {
   // Create a State for Card Logic
   // Make Function Logic inside those Components that Make them Effect Each Other.
   //-------------------------------------------------------------------------------
-
+  // When Card Clicked , Refrech and Random Shuffle the Card State Array:
+  // 1 - Handle Click on Card Component
+  // 2 - hanlde Refrech , for Random shuffel the State Array
 
   const [cardImages, setCardImages] = useState<cardImagesType[]>([]);
 
@@ -55,6 +58,33 @@ export default function MemoryGame() {
     console.log(cardImages);
   }, []);
 
+
+
+  // Hanle Event When Card Clicked 
+  const hanldeCardClick = () => {
+
+      setCardImages((prev) => {
+        const newArray = [...prev];
+
+        for(let i = newArray.length - 1 ; i > 0 ; i -- ) {
+          const j = Math.floor(Math.random() * (i + 1));
+          const temp  = newArray[i];
+          newArray[i] = newArray[j];
+          newArray[j] = temp
+        }
+        return newArray;
+      })
+  }
+
+
+
+
+
+
+
+
+
+
   // Two Main Element
   return (
     <>
@@ -67,7 +97,7 @@ export default function MemoryGame() {
         <div className="flex justify-center h-8/10 w-full border-3 ">
           <div className="flex w-4/5 h-full p-4 flex-wrap gap-2 justify-center">
             {cardImages.map((item) => {
-              return <Card key={item.id} name={item.name} image={item.url} />
+              return <Card key={item.id} name={item.name} image={item.url}  onClick={hanldeCardClick}/>
             })}
           </div>
         </div>

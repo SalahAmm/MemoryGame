@@ -2,14 +2,15 @@
 
 
 type CardProps = {
-  name : string
-  image : string
+  name : string;
+  image : string;
+  onClick : () => void;
 }
 
-export default function Card({name, image} : CardProps) {
+export default function Card({name, image , onClick} : CardProps) {
   return (
     <>
-        <div  className="border-3 h-1/2 w-[22%] p-4 bg-white shadow rounded-2xl hover:scale-102 flex justify-center items-center">
+        <div onClick={onClick} className="border-3 h-1/2 w-[22%] p-4 bg-white shadow rounded-2xl hover:scale-102 flex justify-center items-center">
           <img  className="w-50" src={image} alt={`should be and image of ${name}`}/>
         </div>
     </>
