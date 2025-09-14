@@ -2,6 +2,7 @@ import Card from "./Card";
 import ScoreBoard from "./ScoreBoard";
 import { useEffect } from "react";
 import { useState } from "react";
+import { type MouseEvent } from "react";
 
 
 type cardImagesType = {
@@ -11,16 +12,15 @@ type cardImagesType = {
 };
 
 export default function MemoryGame() {
-  //-----------------------
-  // Create a State for ScoreBoard Logic
-  // Create a State for Card Logic
-  // Make Function Logic inside those Components that Make them Effect Each Other.
-  //-------------------------------------------------------------------------------
-  // When Card Clicked , Refrech and Random Shuffle the Card State Array:
-  // 1 - Handle Click on Card Component
-  // 2 - hanlde Refrech , for Random shuffel the State Array
+  
+  // create a state the push the names of the clicked card 
+  //  if the card we clicked has a name in that state array of names 
+  // then reset , if not score + 1
 
   const [cardImages, setCardImages] = useState<cardImagesType[]>([]);
+  const [scoreBoard , setScoreBoard ] = useState<number>(0);
+  const [highestScore , setHigestScore ] = useState<number>(0);
+  const [pokemonNames , setPokemonNames] = useState<string[]>([]);
 
   useEffect(() => {
     const callImages = async () => {
@@ -61,7 +61,49 @@ export default function MemoryGame() {
 
 
   // Hanle Event When Card Clicked 
-  const hanldeCardClick = () => {
+  const hanldeCardClick = (e: MouseEvent<HTMLDivElement> ) => {
+  // Incerase Score when Card Clicked
+  const clickedName = e.currentTarget.id;
+    // Cheak if there Repeated card
+  if(pokemonNames.includes(clickedName)) {
+    setPokemonNames([]);
+    setScoreBoard(0)
+    //Change the Highest Score
+    if(scoreBoard > highestScore) {
+      setHigestScore(scoreBoard);
+    }
+    
+  }else {
+    // Add Card Names
+    // Increase Score
+    setPokemonNames(prev => [...prev , clickedName]);
+    setScoreBoard(prev => prev + 1);
+  }
+    
+
+
+
+    // Shuffle Card Randomly when Clicked
+      setCardImages((prev) => {
+        const newArray = [...prev];
+
+        for(let i = newArray.length - 1 ; i > 0 ; i -- ) {
+          const j = Math.floor(Math.random() * (i + 1));
+          const temp  = newArray[i];
+          newArray[i] = newArray[j];
+          newArray[j] = temp
+        }
+        return newArray;
+      })
+  }
+
+
+  // Create New Game 
+  //When Button Clicked , Reset All State
+  const handleNewGame = () => {
+    setHigestScore(0);
+    setScoreBoard(0);
+    setPokemonNames([]);
 
       setCardImages((prev) => {
         const newArray = [...prev];
@@ -83,14 +125,12 @@ export default function MemoryGame() {
 
 
 
-
-
   // Two Main Element
   return (
     <>
       <div className="h-full flex flex-col w-full items-center gap-2">
         <div className="h-2/10 border-3 w-full flex justify-center">
-          <ScoreBoard />
+          <ScoreBoard score={scoreBoard} highScore={highestScore}/>
         </div>
 
         {/* Cards */}
@@ -102,7 +142,7 @@ export default function MemoryGame() {
           </div>
         </div>
         <div className="flex-row gap-4 w-3/5 justify-center flex">
-          <button className="w-1/4 p-1 bg-gray-300 rounded hover:scale-102">
+          <button  onClick={handleNewGame}className="w-1/4 p-1 bg-gray-300 rounded hover:scale-102">
             New Game
           </button>
         </div>

@@ -1,12 +1,19 @@
-export default function ScoreBoard () {
+
+type scoreBoardProps = {
+  score : number;
+  highScore: number;
+}
+
+
+export default function ScoreBoard ({score , highScore} : scoreBoardProps) {
 
     return (
         <>
       <div className="flex flex-col gap-5 p-8 w-3/5 items-center border-2 m-5 rounded bg-gray-700 text-white" >
 
         <div className="flex flex-row gap-20 justify-center items-center">
-            <p className="">Current Score : 0</p>
-            <p className="">Best Score : 2</p>
+            <p className="">Current Score : {score}</p>
+            <p className="">Best Score : {highScore}</p>
         </div>
         <p>Click only once on each card to earn pointes!!!</p>        
       </div>
