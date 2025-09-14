@@ -129,13 +129,13 @@ export default function MemoryGame() {
   return (
     <>
       <div className="h-full flex flex-col w-full items-center gap-2">
-        <div className="h-2/10 border-3 w-full flex justify-center">
+        <div className="h-2/10  w-full flex justify-center">
           <ScoreBoard score={scoreBoard} highScore={highestScore}/>
         </div>
 
         {/* Cards */}
-        <div className="flex justify-center h-8/10 w-full border-3 ">
-          <div className="flex w-4/5 h-full p-4 flex-wrap gap-2 justify-center">
+        <div className="flex justify-center h-8/10 w-full  ">
+          <div className="flex w-3/5 h-full p-4 flex-wrap gap-2 justify-center">
             {cardImages.map((item) => {
               return <Card key={item.id} name={item.name} image={item.url}  onClick={hanldeCardClick}/>
             })}
